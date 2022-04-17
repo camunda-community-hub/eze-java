@@ -1,0 +1,42 @@
+{
+  "properties": [
+
+    {
+      "name": "eze.network.port",
+      "type": "java.lang.Integer",
+      "defaultValue": "26500",
+      "description": "Sets the port the embedded gateway binds to."
+    },
+    {
+      "name": "eze.data.directory",
+      "type": "java.lang.String",
+      "defaultValue": "data",
+      "description": "Specify directory in which data is stored. "
+    },
+    {
+      "name": "eze.exporters",
+      "type": "java.lang.List",
+      "description": "Configure exporters below"
+    }
+  ],
+  "hints": [
+    {
+      "name": "eze.network.port",
+      "value": 26500,
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "eze.data.directory",
+      "value": "data",
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    }
+  ]
+}

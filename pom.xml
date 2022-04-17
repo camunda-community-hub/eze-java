@@ -6,20 +6,11 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.camunda.community.extension.name</groupId>
-  <artifactId>give-me-a-name</artifactId>
+  <artifactId>eze-java-root</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
+  <packaging>pom</packaging>
 
-  <name>give-me-a-name</name>
-
-  <scm>
-    <url>https://github.com/camunda-community-hub/maven-template</url>
-    <connection>scm:git:git@github.com:camunda-community-hub/maven-template.git</connection>
-    <developerConnection>scm:git:git@github.com:camunda-community-hub/maven-tenmplate.git
-    </developerConnection>
-    <tag>HEAD</tag>
-  </scm>
+  <name>eze-java</name>
 
   <parent>
     <groupId>org.camunda.community</groupId>
@@ -28,9 +19,23 @@
     <relativePath />
   </parent>
 
+  <modules>
+    <module>engine</module>
+    <module>example</module>
+    <module>spring-eze-starter</module>
+  </modules>
+
+  <scm>
+    <url>https://github.com/lzgabel/eze-java</url>
+    <connection>scm:git:git@github.com:lzgabel/eze-java.git</connection>
+    <developerConnection>scm:git:git@github.com:lzgabel/eze-java.git
+    </developerConnection>
+    <tag>HEAD</tag>
+  </scm>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <version.java>11</version.java>
+    <version.java>17</version.java>
     <maven.version>3.0</maven.version>
 
     <version.junit>5.8.2</version.junit>
@@ -38,7 +43,28 @@
     <plugin.version.surefire>3.0.0-M6</plugin.version.surefire>
     <plugin.version.javadoc>3.3.2</plugin.version.javadoc>
     <plugin.version.jacoco>0.8.8</plugin.version.jacoco>
-    <plugin.version.fmt>2.13</plugin.version.fmt>
+    <plugin.version.flatten>1.2.7</plugin.version.flatten>
+    <plugin.version.fmt>2.9.1</plugin.version.fmt>
+    <plugin.version.spotless>2.22.1</plugin.version.spotless>
+    <plugin.version.googlejavaformat>1.15.0</plugin.version.googlejavaformat>
+
+    <skipChecks>true</skipChecks>
+
+    <zeebe.version>8.0.0</zeebe.version>
+    <agrona.version>1.15.0</agrona.version>
+    <assertj.version>3.22.0</assertj.version>
+    <commons.version>3.12.0</commons.version>
+    <errorprone.version>2.12.1</errorprone.version>
+    <guava.version>31.1-jre</guava.version>
+    <jackson.version>2.13.2.20220328</jackson.version>
+    <javax.version>1.3.2</javax.version>
+    <netty.version>4.1.76.Final</netty.version>
+    <proto.version>2.8.3</proto.version>
+    <protobuf.version>3.20.0</protobuf.version>
+    <spring.version>5.3.19</spring.version>
+    <spring-boot.version>2.6.6</spring-boot.version>
+    <grpc.version>1.45.1</grpc.version>
+    <gson.version>2.9.0</gson.version>
   </properties>
 
   <dependencyManagement>
@@ -50,24 +76,212 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+
+      <dependency>
+        <groupId>io.camunda</groupId>
+        <artifactId>zeebe-bom</artifactId>
+        <version>${zeebe.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>io.camunda</groupId>
+        <artifactId>zeebe-client-java</artifactId>
+        <version>${zeebe.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.camunda</groupId>
+        <artifactId>zeebe-msgpack-value</artifactId>
+        <version>${zeebe.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.camunda</groupId>
+        <artifactId>zeebe-protocol</artifactId>
+        <version>${zeebe.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.camunda</groupId>
+        <artifactId>zeebe-protocol-impl</artifactId>
+        <version>${zeebe.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.camunda</groupId>
+        <artifactId>zeebe-db</artifactId>
+        <version>${zeebe.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.camunda</groupId>
+        <artifactId>zeebe-snapshots</artifactId>
+        <version>${zeebe.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.camunda</groupId>
+        <artifactId>zeebe-workflow-engine</artifactId>
+        <version>${zeebe.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.camunda</groupId>
+        <artifactId>zeebe-util</artifactId>
+        <version>${zeebe.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.camunda</groupId>
+        <artifactId>zeebe-logstreams</artifactId>
+        <version>${zeebe.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.camunda</groupId>
+        <artifactId>zeebe-gateway-protocol-impl</artifactId>
+        <version>${zeebe.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.camunda</groupId>
+        <artifactId>zeebe-protocol-jackson</artifactId>
+        <version>${zeebe.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.camunda</groupId>
+        <artifactId>zeebe-exporter-api</artifactId>
+        <version>${zeebe.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.google.api.grpc</groupId>
+        <artifactId>proto-google-common-protos</artifactId>
+        <version>${proto.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.agrona</groupId>
+        <artifactId>agrona</artifactId>
+        <version>${agrona.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.google.protobuf</groupId>
+        <artifactId>protobuf-java</artifactId>
+        <version>${protobuf.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-bom</artifactId>
+        <version>${netty.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>io.grpc</groupId>
+        <artifactId>grpc-bom</artifactId>
+        <version>${grpc.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>${commons.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.google.code.gson</groupId>
+        <artifactId>gson</artifactId>
+        <version>${gson.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.camunda.community</groupId>
+        <artifactId>eze-java</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.camunda.community</groupId>
+        <artifactId>spring-eze-starter</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+        <version>${spring-boot.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-autoconfigure</artifactId>
+        <version>${spring-boot.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-configuration-processor</artifactId>
+        <version>${spring-boot.version}</version>
+        <optional>true</optional>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.assertj</groupId>
-      <artifactId>assertj-core</artifactId>
-      <version>3.22.0</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
-
   <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>com.diffplug.spotless</groupId>
+          <artifactId>spotless-maven-plugin</artifactId>
+          <version>${plugin.version.spotless}</version>
+          <configuration>
+            <!-- Google code format plugin -->
+            <java>
+              <googleJavaFormat>
+                <version>${plugin.version.googlejavaformat}</version>
+                <style>GOOGLE</style>
+              </googleJavaFormat>
+            </java>
+            <!-- SortPOM plugin -->
+            <pom>
+              <sortPom>
+                <expandEmptyElements>false</expandEmptyElements>
+                <spaceBeforeCloseEmptyElement>true</spaceBeforeCloseEmptyElement>
+                <sortProperties>true</sortProperties>
+              </sortPom>
+            </pom>
+            <applySkip>${skipChecks}</applySkip>
+            <checkSkip>${skipChecks}</checkSkip>
+          </configuration>
+          <dependencies>
+            <dependency>
+              <groupId>com.google.googlejavaformat</groupId>
+              <artifactId>google-java-format</artifactId>
+              <version>${plugin.version.googlejavaformat}</version>
+            </dependency>
+          </dependencies>
+          <executions>
+            <execution>
+              <goals>
+                <goal>apply</goal>
+              </goals>
+              <phase>process-sources</phase>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -93,6 +307,31 @@
         <version>${plugin.version.javadoc}</version>
       </plugin>
 
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>${plugin.version.spotless}</version>
+        <configuration>
+          <markdown>
+            <includes>
+              <include>**/*.md</include>
+            </includes>
+            <excludes>
+              <exclude>**/target/**/*.md</exclude>
+            </excludes>
+            <flexmark />
+          </markdown>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>apply</goal>
+            </goals>
+            <phase>process-sources</phase>
+          </execution>
+        </executions>
+      </plugin>
+
       <!-- Google code format plugin -->
       <plugin>
         <groupId>com.coveo</groupId>
@@ -103,6 +342,40 @@
             <goals>
               <goal>format</goal>
             </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>flatten-maven-plugin</artifactId>
+        <version>${plugin.version.flatten}</version>
+        <configuration>
+          <flattenMode>ossrh</flattenMode>
+          <!--
+            do not change the outputDirectory; it must remain the same one as the relative project
+            directory, as many plugins expect to resolve the project directory from the current POM
+            file's parent, and any plugin which would run post flatten would resolve the project
+            directory to the wrong one. For example, if you configure it to
+            ${project.build.directory}, then any plugin after will think that the project's
+            directory is not /parent/ but /parent/target, which may affect the execution of plugins
+            (e.g. resource file resolution)
+            -->
+        </configuration>
+        <executions>
+          <execution>
+            <id>flatten</id>
+            <goals>
+              <goal>flatten</goal>
+            </goals>
+            <phase>process-resources</phase>
+          </execution>
+          <execution>
+            <id>flatten.clean</id>
+            <goals>
+              <goal>clean</goal>
+            </goals>
+            <phase>clean</phase>
           </execution>
         </executions>
       </plugin>

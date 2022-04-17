@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.camunda.community</groupId>
+  <artifactId>spring-eze-starter</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>EZE - Spring Embedded Zeebe Engine Starter</name>
+  <description>A lightweight version of Zeebe from Camunda.</description>
+  <url>http://www.camunda.org/community-hub-release-parent/eze-java-root/spring-eze-starter</url>
+  <licenses>
+    <license>
+      <name>Zeebe Community License v1.1</name>
+      <url>https://zeebe.io/legal/zeebe-community-license-1.1</url>
+    </license>
+  </licenses>
+  <developers>
+    <developer>
+      <id>camunda.org</id>
+      <name>camunda BPM Community</name>
+      <organization>camunda.org</organization>
+      <organizationUrl>http://camunda.org</organizationUrl>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:git@github.com:lzgabel/eze-java.git/spring-eze-starter</connection>
+    <developerConnection>scm:git:git@github.com:lzgabel/eze-java.git/spring-eze-starter</developerConnection>
+    <url>https://github.com/lzgabel/eze-java/spring-eze-starter</url>
+  </scm>
+  <dependencies>
+    <dependency>
+      <groupId>org.camunda.community</groupId>
+      <artifactId>eze-java</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-autoconfigure</artifactId>
+      <version>2.6.6</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-configuration-processor</artifactId>
+      <version>2.6.6</version>
+      <scope>compile</scope>
+      <optional>true</optional>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>1.6.8</version>
+        <extensions>true</extensions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

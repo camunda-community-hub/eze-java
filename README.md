@@ -1,55 +1,59 @@
 [![Community badge: Incubating](https://img.shields.io/badge/Lifecycle-Incubating-blue)](https://github.com/Camunda-Community-Hub/community/blob/main/extension-lifecycle.md#incubating-)
 [![Community extension badge](https://img.shields.io/badge/Community%20Extension-An%20open%20source%20community%20maintained%20project-FF4700)](https://github.com/camunda-community-hub/community)
 
-# maven-template
+# Embedded Zeebe engine (Java)
 
-Empty maven project with defaults that incorporates Camunda Community Hub best practices.
+A lightweight version of [Zeebe](https://github.com/camunda-cloud/zeebe) from [Camunda](https://camunda.com). It bundles Zeebe's workflow engine including some required parts to a library that can be used by other projects.
+
+**Features:**
+
+* Support Zeebe clients and exporters
+* Use RocksDB instead of the in-memory database
 
 ## Usage
 
-* Use this as a template for new Camunda Community Hub
-  projects. (https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template)
-* Change names and URLs in `pom.xml`
-  * `groupId`/`arrtifactId`
-  ```
-  <groupId>org.camunda.community.extension.name</groupId>
-  <artifactId>give-me-a-name</artifactId>
+### Maven
+
+Add one of the following dependency to your project (i.e. Maven pom.xml):
+
+For the embedded engine:
+
+```
+<dependency>
+  <groupId>org.camunda.community</groupId>
+  <artifactId>spring-eze-starter</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
-  ```
-  * URLs
-  ```
-  <scm>
-    <url>https://github.com/camunda-community-hub/maven-template</url>
-    <connection>scm:git:git@github.com:camunda-community-hub/maven-template.git</connection>
-    <developerConnection>scm:git:git@github.com:camunda-community-hub/maven-tenmplate.git
-    </developerConnection>
-    <tag>HEAD</tag>
-  </scm>
-  ```
-* Add contribution guide to the repo (
-  e.g. [Contributing to this project](https://gist.github.com/jwulf/2c7f772570bfc8654b0a0a783a3f165e) )
-* Select desired license and exchange `LICENSE` file
+</dependency>
+```
 
-## Features
+#### Configuring
 
-- IDE integration
-  - https://editorconfig.org/
-- GitHub Integration
-  - Dependabot enabled for Maven dependencies
-  - Backport action (https://github.com/zeebe-io/backport-action)
-- Maven POM
-  - Release to Maven, Nexus and GitHub
-  - Google Code Formatter
-  - JUnit 5
-  - AssertJ
-  - Surefire Plugin
-  - JaCoCo Plugin (test coverage)
-  - flaky test extractor (https://github.com/zeebe-io/flaky-test-extractor-maven-plugin)
+```
+eze:
+  network:
+    port: 26500
+  data:
+    directory: /Users/lizhi/Desktop/eze
+  exporters:
+    elasticsearch:
+      class-name: io.camunda.zeebe.exporter.ElasticsearchExporter
+      args:
+        url: http://localhost:9200
+```
 
-## Versions
+#### Exporters
 
-Different versions are represented in different branches
+The engine supports Zeebe exporters. An exporter reads the records from the log stream and can export them to an external system.
 
-- `main` - Java 11
-
+```
+eze:
+  exporters:
+    elasticsearch:
+      class-name: io.camunda.zeebe.exporter.ElasticsearchExporter
+      args:
+        url: http://localhost:9200
+        index:
+            prefix: zeebe-record
+            createTemplate: true
+        ...
+```

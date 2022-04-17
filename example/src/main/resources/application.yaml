@@ -1,0 +1,12 @@
+eze:
+  network:
+    port: 26500
+  data:
+    directory: /Users/lizhi/Desktop/eze/
+  exporters:
+    elasticsearch:
+      class-name: io.camunda.zeebe.exporter.ElasticsearchExporter
+      args:
+        url: http://localhost:9200
+
+
