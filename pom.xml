@@ -51,7 +51,7 @@
     <skipChecks>true</skipChecks>
 
     <zeebe.version>8.0.0</zeebe.version>
-    <agrona.version>1.15.0</agrona.version>
+    <agrona.version>1.15.1</agrona.version>
     <assertj.version>3.22.0</assertj.version>
     <commons.version>3.12.0</commons.version>
     <errorprone.version>2.12.1</errorprone.version>
