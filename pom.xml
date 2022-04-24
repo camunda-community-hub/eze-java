@@ -75,7 +75,7 @@
     <spring.version>5.3.19</spring.version>
     <version.java>17</version.java>
 
-    <zeebe.version>8.0.0</zeebe.version>
+    <zeebe.version>8.0.1</zeebe.version>
   </properties>
 
   <dependencyManagement>
