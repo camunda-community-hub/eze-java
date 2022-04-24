@@ -23,7 +23,7 @@ For the embedded engine:
 <dependency>
   <groupId>org.camunda.community</groupId>
   <artifactId>eze-java</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0.1-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -33,7 +33,7 @@ For the Spring Boot Starter:
 <dependency>
   <groupId>org.camunda.community</groupId>
   <artifactId>spring-eze-starter</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0.1-SNAPSHOT</version>
 </dependency>
 ```
 
