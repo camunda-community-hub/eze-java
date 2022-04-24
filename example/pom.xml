@@ -8,8 +8,8 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>spring-eze-example-starter</artifactId>
-  <name>example/spring-eze-example-starter</name>
+  <artifactId>sample-spring-eze-starter</artifactId>
+  <name>example/sample-spring-eze-starter</name>
 
   <dependencies>
     <dependency>
