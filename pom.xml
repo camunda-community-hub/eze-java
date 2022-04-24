@@ -38,13 +38,22 @@
   <properties>
     <agrona.version>1.15.1</agrona.version>
     <assertj.version>3.22.0</assertj.version>
+    <commons-logging.version>1.2</commons-logging.version>
     <commons.version>3.12.0</commons.version>
+    <error-prone.version>2.11.0</error-prone.version>
+    <feel-scala.version>1.14.2</feel-scala.version>
     <grpc.version>1.45.1</grpc.version>
     <gson.version>2.9.0</gson.version>
     <guava.version>31.1-jre</guava.version>
+    <guava.version>31.1-jre</guava.version>
+    <httpasyncclient.version>4.1.5</httpasyncclient.version>
+    <httpclient.version>4.5.13</httpclient.version>
+    <httpcomponents.version>4.4.15</httpcomponents.version>
     <jackson.version>2.13.2.20220328</jackson.version>
+    <junit.version>4.13.2</junit.version>
     <maven.version>3.0</maven.version>
     <netty.version>4.1.76.Final</netty.version>
+    <plugin.version.enforcer>3.0.0</plugin.version.enforcer>
     <plugin.version.flatten>1.2.7</plugin.version.flatten>
     <plugin.version.fmt>2.18</plugin.version.fmt>
     <plugin.version.googlejavaformat>1.15.0</plugin.version.googlejavaformat>
@@ -57,8 +66,11 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <proto.version>2.8.3</proto.version>
     <protobuf.version>3.20.0</protobuf.version>
+    <scala-library.version>2.13.8</scala-library.version>
 
     <skipChecks>false</skipChecks>
+    <slf4j.version>1.7.36</slf4j.version>
+    <snakeyaml.version>1.30</snakeyaml.version>
     <spring-boot.version>2.6.6</spring-boot.version>
     <spring.version>5.3.19</spring.version>
     <version.java>17</version.java>
@@ -72,6 +84,33 @@
         <groupId>io.camunda</groupId>
         <artifactId>zeebe-bom</artifactId>
         <version>${zeebe.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <!-- for dependency convergence -->
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-bom</artifactId>
+        <version>${netty.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <!-- for dependency convergence -->
+      <dependency>
+        <groupId>io.grpc</groupId>
+        <artifactId>grpc-bom</artifactId>
+        <version>${grpc.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <!-- for dependency convergence -->
+      <dependency>
+        <groupId>com.fasterxml.jackson</groupId>
+        <artifactId>jackson-bom</artifactId>
+        <version>2.13.2</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -166,12 +205,18 @@
         <version>${protobuf.version}</version>
       </dependency>
 
+      <!-- for dependency convergence -->
       <dependency>
-        <groupId>io.grpc</groupId>
-        <artifactId>grpc-bom</artifactId>
-        <version>${grpc.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>${commons.version}</version>
+      </dependency>
+
+      <!-- for dependency convergence -->
+      <dependency>
+        <groupId>com.google.errorprone</groupId>
+        <artifactId>error_prone_annotations</artifactId>
+        <version>${error-prone.version}</version>
       </dependency>
 
       <dependency>
@@ -180,16 +225,81 @@
         <version>${gson.version}</version>
       </dependency>
 
+      <!-- for dependency convergence -->
       <dependency>
-        <groupId>org.camunda.community</groupId>
-        <artifactId>eze-java</artifactId>
-        <version>${project.version}</version>
+        <groupId>org.scala-lang</groupId>
+        <artifactId>scala-library</artifactId>
+        <version>${scala-library.version}</version>
       </dependency>
 
+      <!-- for dependency convergence -->
       <dependency>
-        <groupId>org.camunda.community</groupId>
-        <artifactId>spring-eze-starter</artifactId>
-        <version>${project.version}</version>
+        <groupId>org.yaml</groupId>
+        <artifactId>snakeyaml</artifactId>
+        <version>${snakeyaml.version}</version>
+      </dependency>
+
+      <!-- for dependency convergence -->
+      <dependency>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging</artifactId>
+        <version>${commons-logging.version}</version>
+      </dependency>
+
+      <!-- for dependency convergence -->
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpcore</artifactId>
+        <version>${httpcomponents.version}</version>
+      </dependency>
+
+      <!-- for dependency convergence -->
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpcore-nio</artifactId>
+        <version>${httpcomponents.version}</version>
+      </dependency>
+
+      <!-- for dependency convergence -->
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpasyncclient</artifactId>
+        <version>${httpasyncclient.version}</version>
+      </dependency>
+
+      <!-- for dependency convergence -->
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>${httpclient.version}</version>
+      </dependency>
+
+      <!-- for dependency convergence -->
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${junit.version}</version>
+      </dependency>
+
+      <!-- for dependency convergence -->
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+
+      <!-- for dependency convergence -->
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>${guava.version}</version>
+      </dependency>
+
+      <!-- for dependency convergence -->
+      <dependency>
+        <groupId>org.camunda.feel</groupId>
+        <artifactId>feel-engine</artifactId>
+        <version>${feel-scala.version}</version>
       </dependency>
 
       <dependency>
@@ -210,6 +320,19 @@
         <version>${spring-boot.version}</version>
         <optional>true</optional>
       </dependency>
+
+      <dependency>
+        <groupId>org.camunda.community</groupId>
+        <artifactId>eze-java</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.camunda.community</groupId>
+        <artifactId>spring-eze-starter</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
     </dependencies>
   </dependencyManagement>
 
@@ -262,18 +385,18 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.0.0</version>
-        <configuration>
-          <rules>
-            <dependencyConvergence />
-          </rules>
-        </configuration>
+        <version>${plugin.version.enforcer}</version>
         <executions>
           <execution>
+            <id>enforce-dependency-convergence</id>
             <goals>
               <goal>enforce</goal>
             </goals>
-            <phase>verify</phase>
+            <configuration>
+              <rules>
+                <dependencyConvergence />
+              </rules>
+            </configuration>
           </execution>
         </executions>
       </plugin>
