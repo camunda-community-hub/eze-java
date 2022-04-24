@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
-  <artifactId>eze-java-root</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>pom</packaging>
-
-  <name>eze-java</name>
 
   <parent>
     <groupId>org.camunda.community</groupId>
@@ -19,6 +9,19 @@
     <relativePath />
   </parent>
 
+  <artifactId>eze-java-root</artifactId>
+  <version>1.0.0</version>
+  <packaging>pom</packaging>
+
+  <name>eze-java</name>
+
+  <licenses>
+    <license>
+      <name>Zeebe Community License v1.1</name>
+      <url>https://zeebe.io/legal/zeebe-community-license-1.1</url>
+    </license>
+  </licenses>
+
   <modules>
     <module>engine</module>
     <module>example</module>
@@ -26,57 +29,45 @@
   </modules>
 
   <scm>
-    <url>https://github.com/lzgabel/eze-java</url>
-    <connection>scm:git:git@github.com:lzgabel/eze-java.git</connection>
-    <developerConnection>scm:git:git@github.com:lzgabel/eze-java.git
-    </developerConnection>
+    <connection>scm:git:git@github.com:camunda-community-hub/eze-java.git</connection>
+    <developerConnection>scm:git:git@github.com:camunda-community-hub/eze-java.git</developerConnection>
     <tag>HEAD</tag>
+    <url>https://github.com/camunda-community-hub/eze-java</url>
   </scm>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <version.java>17</version.java>
-    <maven.version>3.0</maven.version>
-
-    <version.junit>5.8.2</version.junit>
-
-    <plugin.version.surefire>3.0.0-M6</plugin.version.surefire>
-    <plugin.version.javadoc>3.3.2</plugin.version.javadoc>
-    <plugin.version.jacoco>0.8.8</plugin.version.jacoco>
-    <plugin.version.flatten>1.2.7</plugin.version.flatten>
-    <plugin.version.fmt>2.13</plugin.version.fmt>
-    <plugin.version.spotless>2.22.1</plugin.version.spotless>
-    <plugin.version.googlejavaformat>1.15.0</plugin.version.googlejavaformat>
-
-    <skipChecks>true</skipChecks>
-
-    <zeebe.version>8.0.0</zeebe.version>
     <agrona.version>1.15.1</agrona.version>
     <assertj.version>3.22.0</assertj.version>
     <commons.version>3.12.0</commons.version>
-    <errorprone.version>2.12.1</errorprone.version>
-    <guava.version>31.1-jre</guava.version>
-    <jackson.version>2.13.2.20220328</jackson.version>
-    <javax.version>1.3.2</javax.version>
-    <netty.version>4.1.76.Final</netty.version>
-    <proto.version>2.8.3</proto.version>
-    <protobuf.version>3.20.0</protobuf.version>
-    <spring.version>5.3.19</spring.version>
-    <spring-boot.version>2.6.6</spring-boot.version>
     <grpc.version>1.45.1</grpc.version>
     <gson.version>2.9.0</gson.version>
+    <guava.version>31.1-jre</guava.version>
+    <jackson.version>2.13.2.20220328</jackson.version>
+    <maven.version>3.0</maven.version>
+    <netty.version>4.1.76.Final</netty.version>
+    <plugin.version.flatten>1.2.7</plugin.version.flatten>
+    <plugin.version.fmt>2.18</plugin.version.fmt>
+    <plugin.version.googlejavaformat>1.15.0</plugin.version.googlejavaformat>
+    <plugin.version.jacoco>0.8.8</plugin.version.jacoco>
+    <plugin.version.javadoc>3.3.2</plugin.version.javadoc>
+    <plugin.version.spotless>2.22.1</plugin.version.spotless>
+
+    <plugin.version.surefire>3.0.0-M6</plugin.version.surefire>
+    <plugin.version.versions>2.10.0</plugin.version.versions>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <proto.version>2.8.3</proto.version>
+    <protobuf.version>3.20.0</protobuf.version>
+
+    <skipChecks>false</skipChecks>
+    <spring-boot.version>2.6.6</spring-boot.version>
+    <spring.version>5.3.19</spring.version>
+    <version.java>17</version.java>
+
+    <zeebe.version>8.0.0</zeebe.version>
   </properties>
 
   <dependencyManagement>
     <dependencies>
-      <dependency>
-        <groupId>org.junit</groupId>
-        <artifactId>junit-bom</artifactId>
-        <version>${version.junit}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-
       <dependency>
         <groupId>io.camunda</groupId>
         <artifactId>zeebe-bom</artifactId>
@@ -147,13 +138,13 @@
 
       <dependency>
         <groupId>io.camunda</groupId>
-        <artifactId>zeebe-protocol-jackson</artifactId>
+        <artifactId>zeebe-exporter-api</artifactId>
         <version>${zeebe.version}</version>
       </dependency>
 
       <dependency>
         <groupId>io.camunda</groupId>
-        <artifactId>zeebe-exporter-api</artifactId>
+        <artifactId>zeebe-elasticsearch-exporter</artifactId>
         <version>${zeebe.version}</version>
       </dependency>
 
@@ -176,25 +167,11 @@
       </dependency>
 
       <dependency>
-        <groupId>io.netty</groupId>
-        <artifactId>netty-bom</artifactId>
-        <version>${netty.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
-
-      <dependency>
         <groupId>io.grpc</groupId>
         <artifactId>grpc-bom</artifactId>
         <version>${grpc.version}</version>
         <type>pom</type>
         <scope>import</scope>
-      </dependency>
-
-      <dependency>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-lang3</artifactId>
-        <version>${commons.version}</version>
       </dependency>
 
       <dependency>
@@ -214,7 +191,6 @@
         <artifactId>spring-eze-starter</artifactId>
         <version>${project.version}</version>
       </dependency>
-
 
       <dependency>
         <groupId>org.springframework.boot</groupId>
@@ -289,15 +265,15 @@
         <version>3.0.0</version>
         <configuration>
           <rules>
-            <dependencyConvergence/>
+            <dependencyConvergence />
           </rules>
         </configuration>
         <executions>
           <execution>
-            <phase>verify</phase>
             <goals>
               <goal>enforce</goal>
             </goals>
+            <phase>verify</phase>
           </execution>
         </executions>
       </plugin>
@@ -334,7 +310,7 @@
 
       <!-- Google code format plugin -->
       <plugin>
-        <groupId>com.coveo</groupId>
+        <groupId>com.spotify.fmt</groupId>
         <artifactId>fmt-maven-plugin</artifactId>
         <version>${plugin.version.fmt}</version>
         <executions>
@@ -344,6 +320,13 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+
+      <!-- Versions plugin to update versions in pom files -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>versions-maven-plugin</artifactId>
+        <version>${plugin.version.versions}</version>
       </plugin>
 
       <plugin>
@@ -394,10 +377,10 @@
           </execution>
           <execution>
             <id>coverage-report</id>
-            <phase>post-integration-test</phase>
             <goals>
               <goal>report</goal>
             </goals>
+            <phase>post-integration-test</phase>
           </execution>
           <!-- Threshold -->
         </executions>
@@ -416,10 +399,10 @@
         <version>2.1.1</version>
         <executions>
           <execution>
-            <phase>post-integration-test</phase>
             <goals>
               <goal>extract-flaky-tests</goal>
             </goals>
+            <phase>post-integration-test</phase>
           </execution>
         </executions>
       </plugin>

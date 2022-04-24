@@ -1,8 +1,16 @@
+/*
+ * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH under
+ * one or more contributor license agreements. See the NOTICE file distributed
+ * with this work for additional information regarding copyright ownership.
+ * Licensed under the Zeebe Community License 1.1. You may not use this file
+ * except in compliance with the Zeebe Community License 1.1.
+ */
 package org.camunda.community.eze.autoconfigure;
 
-import org.camunda.community.eze.engine.EngineFactory;
-import org.camunda.community.eze.engine.ZeebeEngine;
-import org.camunda.community.eze.engine.configuration.BrokerCfg;
+import io.camunda.zeebe.client.ZeebeClient;
+import org.camunda.community.eze.EngineFactory;
+import org.camunda.community.eze.ZeebeEngine;
+import org.camunda.community.eze.configuration.BrokerCfg;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -31,14 +39,20 @@ public class ZeebeEngineAutoConfiguration implements InitializingBean, Disposabl
     return zeebeEngine;
   }
 
+  @Bean
+  @ConditionalOnMissingBean
+  public ZeebeClient zeebeClient(ZeebeEngine zeebeEngine) {
+    return zeebeEngine.createClient();
+  }
+
   @Override
-  public void afterPropertiesSet() throws Exception {
+  public void afterPropertiesSet() {
     zeebeEngine = EngineFactory.create(brokerCfg);
     zeebeEngine.start();
   }
 
   @Override
-  public void destroy() throws Exception {
+  public void destroy() {
     zeebeEngine.stop();
   }
 }

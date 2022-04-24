@@ -1,10 +1,15 @@
 {
   "properties": [
-
+    {
+      "name": "eze.network.host",
+      "type": "java.lang.String",
+      "defaultValue": "0.0.0.0",
+      "description": " Sets the host the embedded gateway binds to."
+    },
     {
       "name": "eze.network.port",
       "type": "java.lang.Integer",
-      "defaultValue": "26500",
+      "defaultValue": 26500,
       "description": "Sets the port the embedded gateway binds to."
     },
     {
@@ -14,12 +19,75 @@
       "description": "Specify directory in which data is stored. "
     },
     {
+      "name": "eze.data.snapshotPeriod",
+      "type": "java.time.Duration",
+      "defaultValue": "5m",
+      "description": " How often we take snapshots of streams (time unit)."
+    },
+    {
+      "name": "eze.data.logSegmentSize",
+      "type": "org.springframework.util.unit.DataSize",
+      "defaultValue": "128MB",
+      "description": "The size of data log segment files."
+    },
+    {
+      "name": "eze.rocksdb.enableStatistics",
+      "type": "java.lang.Boolean",
+      "defaultValue": "false",
+      "description": "Enables RocksDB statistics, which will be written to the RocksDB log file."
+    },
+    {
+      "name": "eze.rocksdb.maxOpenFiles",
+      "type": "java.lang.Integer",
+      "defaultValue": "-1",
+      "description": "Configures how many files are kept open by RocksDB, per default it is unlimited (-1)."
+    },
+    {
+      "name": "eze.rocksdb.maxWriteBufferNumber",
+      "type": "java.lang.Integer",
+      "defaultValue": "6",
+      "description": "Configures the maximum number of simultaneous write buffers/memtables RocksDB will have in memory. "
+    },
+    {
+      "name": "eze.rocksdb.minWriteBufferNumberToMerge",
+      "type": "java.lang.Integer",
+      "defaultValue": "3",
+      "description": "Configures how many write buffers should be full before they are merged and flushed to disk."
+    },
+    {
+      "name": "eze.rocksdb.ioRateBytesPerSecond",
+      "type": "java.lang.Integer",
+      "defaultValue": "0",
+      "description": " Configures a rate limit for write I/O of RocksDB. Setting any value less than or equal to 0 will disable this, which is the default setting."
+    },
+    {
+      "name": "eze.rocksdb.memoryLimit",
+      "type": "java.lang.String",
+      "defaultValue": "512MB",
+      "description": "Configures the memory limit, which can be used by RocksDB. Be aware that this setting only applies to RocksDB, which is used by the Zeebe's state management and that an RocksDB instance is used per partition."
+    },
+    {
+      "name": "eze.rocksdb.disableWal",
+      "type": "java.lang.Boolean",
+      "defaultValue": "false",
+      "description": " Configures if the RocksDB write-ahead-log is used or not. By default, every write in RocksDB goes to the active write buffer and the WAL;"
+    },
+    {
       "name": "eze.exporters",
       "type": "java.lang.List",
       "description": "Configure exporters below"
     }
   ],
   "hints": [
+    {
+      "name": "eze.network.host",
+      "value": "0.0.0.0",
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
     {
       "name": "eze.network.port",
       "value": 26500,
@@ -32,6 +100,87 @@
     {
       "name": "eze.data.directory",
       "value": "data",
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "eze.data.snapshotPeriod",
+      "value": "5m",
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "eze.data.logSegmentSize",
+      "value": "128M",
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "eze.rocksdb.enableStatistics",
+      "value": false,
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "eze.rocksdb.maxOpenFiles",
+      "value": 26500,
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "eze.rocksdb.maxWriteBufferNumber",
+      "value": 6,
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "eze.rocksdb.minWriteBufferNumberToMerge",
+      "value": 3,
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "eze.rocksdb.ioRateBytesPerSecond",
+      "value": 0,
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "eze.rocksdb.memoryLimit",
+      "value": 26500,
+      "providers": [
+        {
+          "name": "any"
+        }
+      ]
+    },
+    {
+      "name": "eze.rocksdb.disableWal",
+      "value": false,
       "providers": [
         {
           "name": "any"
