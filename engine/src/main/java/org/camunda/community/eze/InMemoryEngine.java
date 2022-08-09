@@ -9,10 +9,10 @@ package org.camunda.community.eze;
 
 import io.camunda.zeebe.client.ZeebeClient;
 import io.camunda.zeebe.db.ZeebeDb;
-import io.camunda.zeebe.engine.processing.streamprocessor.StreamProcessor;
 import io.camunda.zeebe.engine.state.ZbColumnFamilies;
 import io.camunda.zeebe.logstreams.log.LogStream;
-import io.camunda.zeebe.util.sched.ActorScheduler;
+import io.camunda.zeebe.scheduler.ActorScheduler;
+import io.camunda.zeebe.streamprocessor.StreamProcessor;
 import io.grpc.Server;
 import java.io.IOException;
 import org.camunda.community.eze.exporter.stream.ExporterDirector;
@@ -65,7 +65,6 @@ class InMemoryEngine implements ZeebeEngine {
     try {
       grpcServer.shutdownNow();
       grpcServer.awaitTermination();
-      gateway.close();
       exporterDirector.close();
       streamProcessor.close();
       database.close();

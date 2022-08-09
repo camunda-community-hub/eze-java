@@ -5,20 +5,13 @@
  * Licensed under the Zeebe Community License 1.1. You may not use this file
  * except in compliance with the Zeebe Community License 1.1.
  */
-/*
- * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH under
- * one or more contributor license agreements. See the NOTICE file distributed
- * with this work for additional information regarding copyright ownership.
- * Licensed under the Zeebe Community License 1.1. You may not use this file
- * except in compliance with the Zeebe Community License 1.1.
- */
-package org.camunda.community.eze;
+package org.camunda.community.eze.logstreams;
 
 import io.atomix.raft.storage.log.RaftLog;
+import io.camunda.zeebe.scheduler.Actor;
 import io.camunda.zeebe.snapshots.PersistedSnapshot;
 import io.camunda.zeebe.snapshots.PersistedSnapshotListener;
 import io.camunda.zeebe.snapshots.PersistedSnapshotStore;
-import io.camunda.zeebe.util.sched.Actor;
 import java.util.Collection;
 import java.util.Map;
 

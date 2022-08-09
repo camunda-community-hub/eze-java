@@ -18,20 +18,23 @@ import io.camunda.zeebe.db.ZeebeDbFactory;
 import io.camunda.zeebe.db.impl.rocksdb.RocksDbConfiguration;
 import io.camunda.zeebe.db.impl.rocksdb.ZeebeRocksDbFactory;
 import io.camunda.zeebe.engine.processing.EngineProcessors;
-import io.camunda.zeebe.engine.processing.streamprocessor.StreamProcessor;
+import io.camunda.zeebe.engine.processing.deployment.distribute.DeploymentDistributionCommandSender;
+import io.camunda.zeebe.engine.processing.message.command.SubscriptionCommandSender;
 import io.camunda.zeebe.engine.state.ZbColumnFamilies;
 import io.camunda.zeebe.engine.state.appliers.EventAppliers;
 import io.camunda.zeebe.logstreams.log.LogStream;
 import io.camunda.zeebe.logstreams.log.LogStreamBuilder;
 import io.camunda.zeebe.logstreams.storage.LogStorage;
-import io.camunda.zeebe.logstreams.storage.atomix.AtomixLogStorage;
+import io.camunda.zeebe.scheduler.Actor;
+import io.camunda.zeebe.scheduler.ActorScheduler;
+import io.camunda.zeebe.scheduler.ActorSchedulingService;
+import io.camunda.zeebe.scheduler.ConcurrencyControl;
+import io.camunda.zeebe.scheduler.clock.ActorClock;
+import io.camunda.zeebe.scheduler.clock.ControlledActorClock;
 import io.camunda.zeebe.snapshots.impl.FileBasedSnapshotStoreFactory;
+import io.camunda.zeebe.streamprocessor.StreamProcessor;
+import io.camunda.zeebe.util.FeatureFlags;
 import io.camunda.zeebe.util.jar.ExternalJarLoadException;
-import io.camunda.zeebe.util.sched.Actor;
-import io.camunda.zeebe.util.sched.ActorScheduler;
-import io.camunda.zeebe.util.sched.ActorSchedulingService;
-import io.camunda.zeebe.util.sched.clock.ActorClock;
-import io.camunda.zeebe.util.sched.clock.ControlledActorClock;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import java.io.File;
@@ -47,13 +50,15 @@ import org.camunda.community.eze.exporter.repo.ExporterLoadException;
 import org.camunda.community.eze.exporter.repo.ExporterRepository;
 import org.camunda.community.eze.exporter.stream.ExporterDirector;
 import org.camunda.community.eze.exporter.stream.ExporterDirectorContext;
+import org.camunda.community.eze.logstreams.*;
+import org.camunda.community.eze.logstreams.state.StatePositionSupplier;
 
 public class EngineFactory {
 
   private static final String PARTITION_NAME_FORMAT = "partition-%d";
   private static final int PARTITION_ID = 1;
   private static final int NODE_ID = 1;
-  private static final int PARTITION_COUNT = 1;
+  private static final int PARTITION_COUNT = 10;
 
   private static RaftLog raftLog;
   private static File directory;
@@ -100,35 +105,28 @@ public class EngineFactory {
     Appender appender = new Appender();
     logStorage = new AtomixLogStorage(raftLog::openUncommittedReader, appender);
     final LogStream logStream = createLogStream(logStorage, scheduler, PARTITION_ID);
-
-    final SubscriptionCommandSenderFactory subscriptionCommandSenderFactory =
-        new SubscriptionCommandSenderFactory(
-            logStream.newLogStreamRecordWriter().join(), PARTITION_ID);
-
     final StateController stateController = createStateController(snapshotStoreFactory, brokerCfg);
     final ZeebeDb zeebeDb = stateController.recover().join();
 
-    final EngineStateMonitor engineStateMonitor =
-        new EngineStateMonitor(logStorage, logStream.newLogStreamReader().join());
-
+    final CommandWriter commandWriter =
+        new CommandWriter(logStream.newLogStreamRecordWriter().join());
+    final CommandSender commandSender = new CommandSender(commandWriter);
+    final GatewayRequestStore gatewayRequestStore = new GatewayRequestStore();
     final GrpcToLogStreamGateway gateway =
         new GrpcToLogStreamGateway(
-            logStream.newLogStreamRecordWriter().join(),
+            commandWriter,
             PARTITION_ID,
             PARTITION_COUNT,
             network.getHost(),
-            network.getPort());
+            network.getPort(),
+            gatewayRequestStore);
     final Server grpcServer = ServerBuilder.forPort(network.getPort()).addService(gateway).build();
-    final GrpcResponseWriter grpcResponseWriter = new GrpcResponseWriter(gateway);
+    final GrpcResponseWriter grpcResponseWriter =
+        new GrpcResponseWriter(gateway, gatewayRequestStore);
 
     final StreamProcessor streamProcessor =
         createStreamProcessor(
-            logStream,
-            zeebeDb,
-            scheduler,
-            grpcResponseWriter,
-            engineStateMonitor,
-            subscriptionCommandSenderFactory);
+            logStream, zeebeDb, scheduler, grpcResponseWriter, PARTITION_COUNT, commandSender);
 
     snapshotDirector =
         AsyncSnapshotDirector.ofProcessingMode(
@@ -171,7 +169,7 @@ public class EngineFactory {
         directory.toPath().resolve("runtime"),
         atomixRecordEntrySupplier,
         StatePositionSupplier::getHighestExportedPosition,
-        snapshotStoreFactory.getSnapshotStoreConcurrencyControl(PARTITION_ID));
+        (ConcurrencyControl) snapshotStoreFactory.getPersistedSnapshotStore(PARTITION_ID));
   }
 
   private static ControlledActorClock createActorClock() {
@@ -183,25 +181,6 @@ public class EngineFactory {
         ActorScheduler.newActorScheduler().setActorClock(clock).build();
     scheduler.start();
     return scheduler;
-  }
-
-  private static ExporterRepository buildExporterRepository(final BrokerCfg cfg) {
-    final ExporterRepository exporterRepository = new ExporterRepository();
-    final var exporterEntries = cfg.getExporters().entrySet();
-
-    // load and validate exporters
-    for (final var exporterEntry : exporterEntries) {
-      final var id = exporterEntry.getKey();
-      final var exporterCfg = exporterEntry.getValue();
-      try {
-        exporterRepository.load(id, exporterCfg);
-      } catch (final ExporterLoadException | ExternalJarLoadException e) {
-        throw new IllegalStateException(
-            "Failed to load exporter with configuration: " + exporterCfg, e);
-      }
-    }
-
-    return exporterRepository;
   }
 
   private static LogStream createLogStream(
@@ -242,8 +221,8 @@ public class EngineFactory {
       final ZeebeDb<ZbColumnFamilies> database,
       final ActorSchedulingService scheduler,
       final GrpcResponseWriter grpcResponseWriter,
-      final EngineStateMonitor engineStateMonitor,
-      final SubscriptionCommandSenderFactory subscriptionCommandSenderFactory) {
+      final int partitionCount,
+      final CommandSender commandSender) {
     return StreamProcessor.builder()
         .logStream(logStream)
         .zeebeDb(database)
@@ -252,14 +231,34 @@ public class EngineFactory {
         .streamProcessorFactory(
             context ->
                 EngineProcessors.createEngineProcessors(
-                    context.listener(engineStateMonitor),
-                    PARTITION_COUNT,
-                    subscriptionCommandSenderFactory.createSender(),
-                    new SinglePartitionDeploymentDistributor(),
-                    new SinglePartitionDeploymentResponder(),
-                    jobType -> {}))
+                    context,
+                    partitionCount,
+                    new SubscriptionCommandSender(context.getPartitionId(), commandSender),
+                    new DeploymentDistributionCommandSender(
+                        context.getPartitionId(), commandSender),
+                    jobType -> {},
+                    FeatureFlags.createDefault()))
         .actorSchedulingService(scheduler)
         .build();
+  }
+
+  private static ExporterRepository buildExporterRepository(final BrokerCfg cfg) {
+    final ExporterRepository exporterRepository = new ExporterRepository();
+    final var exporterEntries = cfg.getExporters().entrySet();
+
+    // load and validate exporters
+    for (final var exporterEntry : exporterEntries) {
+      final var id = exporterEntry.getKey();
+      final var exporterCfg = exporterEntry.getValue();
+      try {
+        exporterRepository.load(id, exporterCfg);
+      } catch (final ExporterLoadException | ExternalJarLoadException e) {
+        throw new IllegalStateException(
+            "Failed to load exporter with configuration: " + exporterCfg, e);
+      }
+    }
+
+    return exporterRepository;
   }
 
   private static final class Appender implements ZeebeLogAppender {

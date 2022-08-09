@@ -106,34 +106,15 @@
     </dependency>
 
     <dependency>
+      <groupId>io.camunda</groupId>
+      <artifactId>zeebe-atomix-cluster</artifactId>
+      <version>${zeebe.version}</version>
+    </dependency>
+
+    <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
     </dependency>
   </dependencies>
-
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-dependency-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>analyze</id>
-            <goals>
-              <goal>analyze-only</goal>
-              <goal>analyze-dep-mgt</goal>
-              <goal>analyze-duplicate</goal>
-            </goals>
-            <configuration>
-              <!-- TODO remove this after version of
-              plugin is released which includes
-              https://github.com/apache/maven-dependency-plugin/pull/194 -->
-              <failOnWarning>false</failOnWarning>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
 
 </project>

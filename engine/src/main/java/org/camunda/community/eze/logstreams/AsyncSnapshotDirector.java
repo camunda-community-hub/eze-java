@@ -5,36 +5,29 @@
  * Licensed under the Zeebe Community License 1.1. You may not use this file
  * except in compliance with the Zeebe Community License 1.1.
  */
-/*
- * Copyright Camunda Services GmbH and/or licensed to Camunda Services GmbH under
- * one or more contributor license agreements. See the NOTICE file distributed
- * with this work for additional information regarding copyright ownership.
- * Licensed under the Zeebe Community License 1.1. You may not use this file
- * except in compliance with the Zeebe Community License 1.1.
- */
-package org.camunda.community.eze;
+package org.camunda.community.eze.logstreams;
 
 import io.atomix.raft.RaftCommittedEntryListener;
 import io.atomix.raft.storage.log.IndexedRaftLogEntry;
-import io.camunda.zeebe.engine.processing.streamprocessor.StreamProcessor;
-import io.camunda.zeebe.engine.processing.streamprocessor.StreamProcessorMode;
 import io.camunda.zeebe.logstreams.impl.Loggers;
+import io.camunda.zeebe.scheduler.Actor;
+import io.camunda.zeebe.scheduler.future.ActorFuture;
+import io.camunda.zeebe.scheduler.future.CompletableActorFuture;
 import io.camunda.zeebe.snapshots.PersistedSnapshot;
 import io.camunda.zeebe.snapshots.SnapshotException;
 import io.camunda.zeebe.snapshots.SnapshotException.SnapshotNotFoundException;
 import io.camunda.zeebe.snapshots.TransientSnapshot;
+import io.camunda.zeebe.streamprocessor.StreamProcessor;
+import io.camunda.zeebe.streamprocessor.StreamProcessorMode;
 import io.camunda.zeebe.util.health.FailureListener;
 import io.camunda.zeebe.util.health.HealthMonitorable;
 import io.camunda.zeebe.util.health.HealthReport;
-import io.camunda.zeebe.util.sched.Actor;
-import io.camunda.zeebe.util.sched.SchedulingHints;
-import io.camunda.zeebe.util.sched.future.ActorFuture;
-import io.camunda.zeebe.util.sched.future.CompletableActorFuture;
 import java.time.Duration;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BooleanSupplier;
+import org.camunda.community.eze.util.RandomDuration;
 import org.slf4j.Logger;
 
 public final class AsyncSnapshotDirector extends Actor
@@ -106,7 +99,6 @@ public final class AsyncSnapshotDirector extends Actor
 
   @Override
   protected void onActorStarting() {
-    actor.setSchedulingHints(SchedulingHints.ioBound());
     final var firstSnapshotTime =
         RandomDuration.getRandomDurationMinuteBased(MINIMUM_SNAPSHOT_PERIOD, snapshotRate);
     actor.runDelayed(firstSnapshotTime, this::scheduleSnapshotOnRate);

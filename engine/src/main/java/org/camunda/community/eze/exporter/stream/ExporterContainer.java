@@ -9,15 +9,15 @@ package org.camunda.community.eze.exporter.stream;
 
 import static io.camunda.zeebe.engine.Loggers.getExporterLogger;
 
-import io.camunda.zeebe.engine.processing.streamprocessor.TypedRecord;
+import io.camunda.zeebe.engine.api.TypedRecord;
 import io.camunda.zeebe.exporter.api.Exporter;
 import io.camunda.zeebe.exporter.api.context.Context;
 import io.camunda.zeebe.exporter.api.context.Controller;
 import io.camunda.zeebe.exporter.api.context.ScheduledTask;
 import io.camunda.zeebe.protocol.impl.record.RecordMetadata;
 import io.camunda.zeebe.protocol.record.Record;
+import io.camunda.zeebe.scheduler.ActorControl;
 import io.camunda.zeebe.util.jar.ThreadContextUtil;
-import io.camunda.zeebe.util.sched.ActorControl;
 import java.time.Duration;
 import org.camunda.community.eze.exporter.repo.ExporterDescriptor;
 import org.slf4j.Logger;

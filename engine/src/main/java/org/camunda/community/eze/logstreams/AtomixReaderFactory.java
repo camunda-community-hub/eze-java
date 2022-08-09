@@ -5,14 +5,11 @@
  * Licensed under the Zeebe Community License 1.1. You may not use this file
  * except in compliance with the Zeebe Community License 1.1.
  */
-package org.camunda.community.eze;
+package org.camunda.community.eze.logstreams;
 
-import io.camunda.zeebe.engine.processing.deployment.DeploymentResponder;
+import io.atomix.raft.storage.log.RaftLogReader;
 
-class SinglePartitionDeploymentResponder implements DeploymentResponder {
-
-  @Override
-  public void sendDeploymentResponse(final long deploymentKey, final int partitionId) {
-    // no need to implement if there is only one partition
-  }
+@FunctionalInterface
+public interface AtomixReaderFactory {
+  RaftLogReader create();
 }
