@@ -64,7 +64,7 @@
     <plugin.version.license>4.1</plugin.version.license>
     <plugin.version.spotless>2.23.0</plugin.version.spotless>
 
-    <plugin.version.surefire>3.0.0-M6</plugin.version.surefire>
+    <plugin.version.surefire>3.0.0-M7</plugin.version.surefire>
     <plugin.version.versions>2.10.0</plugin.version.versions>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <proto.version>2.9.2</proto.version>
