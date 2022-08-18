@@ -67,7 +67,7 @@
     <plugin.version.surefire>3.0.0-M6</plugin.version.surefire>
     <plugin.version.versions>2.10.0</plugin.version.versions>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <proto.version>2.8.3</proto.version>
+    <proto.version>2.9.2</proto.version>
     <protobuf.version>3.20.1</protobuf.version>
     <scala-library.version>2.13.8</scala-library.version>
 
