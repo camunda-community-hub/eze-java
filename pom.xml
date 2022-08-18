@@ -43,7 +43,7 @@
     <error-prone.version>2.15.0</error-prone.version>
     <feel-scala.version>1.14.2</feel-scala.version>
     <grpc.version>1.48.1</grpc.version>
-    <gson.version>2.9.0</gson.version>
+    <gson.version>2.9.1</gson.version>
     <guava.version>31.1-jre</guava.version>
     <guava.version>31.1-jre</guava.version>
     <httpasyncclient.version>4.1.5</httpasyncclient.version>
@@ -60,12 +60,12 @@
     <plugin.version.fmt>2.18</plugin.version.fmt>
     <plugin.version.googlejavaformat>1.15.0</plugin.version.googlejavaformat>
     <plugin.version.jacoco>0.8.8</plugin.version.jacoco>
-    <plugin.version.javadoc>3.4.0</plugin.version.javadoc>
+    <plugin.version.javadoc>3.4.1</plugin.version.javadoc>
     <plugin.version.license>4.1</plugin.version.license>
     <plugin.version.spotless>2.23.0</plugin.version.spotless>
 
     <plugin.version.surefire>3.0.0-M7</plugin.version.surefire>
-    <plugin.version.versions>2.10.0</plugin.version.versions>
+    <plugin.version.versions>2.11.0</plugin.version.versions>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <proto.version>2.9.2</proto.version>
     <protobuf.version>3.20.1</protobuf.version>
