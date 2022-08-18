@@ -68,7 +68,7 @@
     <plugin.version.versions>2.10.0</plugin.version.versions>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <proto.version>2.9.2</proto.version>
-    <protobuf.version>3.20.1</protobuf.version>
+    <protobuf.version>3.21.5</protobuf.version>
     <scala-library.version>2.13.8</scala-library.version>
 
     <skipChecks>false</skipChecks>
