@@ -6,7 +6,7 @@
 A lightweight version of [Zeebe](https://github.com/camunda-cloud/zeebe) from [Camunda](https://camunda.com). It bundles
 Zeebe's workflow engine including some required libraries so that it can be included in Java projects.
 
-**Important note:** This project is a community effort **not maintained** by Camunda and **not supported for production usage**. Use at your own risk. Additionally, there is also the [https://github.com/camunda-community-hub/eze/](EZE) community project, providing an in-memory engine mostly used for JUnit tests. The main differences of EZE Java are the usage of Java instead of Kotlin, and the use of RockDB for storage instead of a complete in-memory solution.
+**Important note:** This project is a community effort **not maintained** by Camunda and **not supported for production usage**. Use at your own risk. Additionally, there is also the [EZE](https://github.com/camunda-community-hub/eze/) community project, providing an in-memory engine mostly used for JUnit tests. The main differences of EZE Java are the usage of Java instead of Kotlin, and the use of RockDB for storage instead of a complete in-memory solution.
 
 **Features:**
 
